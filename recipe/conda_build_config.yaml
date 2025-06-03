@@ -6,3 +6,4 @@ MACOSX_SDK_VERSION:    # [osx]
   - 10.15              # [osx]
 c_stdlib_version:      # [osx]
   - 10.15              # [osx]
+cpu_optimization_target: nocona
