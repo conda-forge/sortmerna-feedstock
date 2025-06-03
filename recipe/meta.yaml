@@ -12,6 +12,8 @@ source:
 build:
   number: 0
   skip: True  # [win]
+  # Using nocona CPU target to ensure maximum compatibility across x86_64 systems
+  # This prevents illegal instruction errors on systems without newer CPU features
 
 requirements:
   build:
