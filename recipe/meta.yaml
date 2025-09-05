@@ -10,7 +10,7 @@ source:
   sha256: 6b62def30704ea956e1de060b602f9bebc8f2ba68107c59329b332500997b1d2
 
 build:
-  number: 1
+  number: 2
   skip: True  # [win]
   # Using nocona CPU target to ensure maximum compatibility across x86_64 systems
   # This prevents illegal instruction errors on systems without newer CPU features
