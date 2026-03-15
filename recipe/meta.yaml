@@ -12,6 +12,9 @@ source:
 build:
   number: 2
   skip: True  # [win]
+  # we decided to skip linux-ppc64le due to lack of maintainer interest
+  # https://github.com/conda-forge/sortmerna-feedstock/pull/7
+  skip: true  # [ppc64le]
   # Using nocona CPU target to ensure maximum compatibility across x86_64 systems
   # This prevents illegal instruction errors on systems without newer CPU features
 
