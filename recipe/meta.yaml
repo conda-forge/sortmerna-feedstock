@@ -12,6 +12,7 @@ source:
 build:
   number: 2
   skip: True  # [win]
+  skip: True  # [osx and arm64]
   # Using nocona CPU target to ensure maximum compatibility across x86_64 systems
   # This prevents illegal instruction errors on systems without newer CPU features
 
