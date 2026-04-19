@@ -1,5 +1,5 @@
 {% set name = "sortmerna" %}
-{% set version = "4.3.7" %}
+{% set version = "4.4.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: 6b62def30704ea956e1de060b602f9bebc8f2ba68107c59329b332500997b1d2
+  sha256: f7c93740f3003903704201b2e0d3103dba586350d6521f295f8989c600b87347
 
 build:
-  number: 2
-  skip: True  # [win]
+  number: 0
+  skip: true  # [win]
   # we decided to skip linux-ppc64le due to lack of maintainer interest
   # https://github.com/conda-forge/sortmerna-feedstock/pull/7
   skip: true  # [ppc64le]
@@ -36,8 +36,8 @@ requirements:
 
 test:
   commands:
-  - {{ name }} -h  # [not win]
-  - {{ name }}.exe -h  # [win]
+    - {{ name }} -h # [not win]
+    - {{ name }}.exe -h # [win]
 
 about:
   home: http://bioinfo.lifl.fr/RNA/sortmerna
