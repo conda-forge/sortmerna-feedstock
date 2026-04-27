@@ -1,9 +1,9 @@
 c_compiler_version:    # [linux]
-  - 11.4               # [linux]
+  - 11.5               # [linux]
 cxx_compiler_version:  # [linux]
-  - 11.4               # [linux]
+  - 11.5               # [linux]
 MACOSX_SDK_VERSION:    # [osx]
-  - 10.15              # [osx]
+  - 11.0               # [osx]
 c_stdlib_version:      # [osx]
-  - 10.15              # [osx]
+  - 11.0               # [osx]
 cpu_optimization_target: nocona
