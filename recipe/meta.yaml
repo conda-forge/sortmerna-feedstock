@@ -11,12 +11,9 @@ source:
 
 build:
   number: 0
-  skip: true  # [win]
   # we decided to skip linux-ppc64le due to lack of maintainer interest
   # https://github.com/conda-forge/sortmerna-feedstock/pull/7
   skip: true  # [ppc64le]
-  # Using nocona CPU target to ensure maximum compatibility across x86_64 systems
-  # This prevents illegal instruction errors on systems without newer CPU features
 
 requirements:
   build:
@@ -24,20 +21,19 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - cmake
+    - ninja
     - git
   host:
     - python
     - pyyaml
     - jinja2
     - requests
-    - ninja
   run:
     - python
 
 test:
   commands:
-    - {{ name }} -h  # [not win]
-    - {{ name }}.exe -h  # [win]
+    - {{ name }} -h
 
 about:
   home: http://bioinfo.lifl.fr/RNA/sortmerna
