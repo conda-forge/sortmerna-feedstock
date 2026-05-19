@@ -1,5 +1,5 @@
 {% set name = "sortmerna" %}
-{% set version = "5.0.0" %}
+{% set version = "6.0.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: e7861ca503efbdf1f352f4730231381597a5b85a3d5ee67671d884b3238c5232
+  sha256: 2f80b7f7f17689d40218f822fb5463b92cb27b22bc62b803480c62790810dd87
 
 build:
   number: 0
