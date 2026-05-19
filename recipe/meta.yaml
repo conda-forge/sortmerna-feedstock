@@ -14,6 +14,7 @@ build:
   # we decided to skip linux-ppc64le due to lack of maintainer interest
   # https://github.com/conda-forge/sortmerna-feedstock/pull/7
   skip: true  # [ppc64le]
+  skip: true  # [win]
 
 requirements:
   build:
