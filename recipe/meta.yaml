@@ -8,6 +8,10 @@ package:
 source:
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: 9bdd087a2b086dbffae5200e6990296231f0b541e391f701727e37ac50f92629
+  patches:
+    # bundled RocksDB v7.10.2 adds -march=native unconditionally when PORTABLE=OFF;
+    # Apple clang rejects -march=native for arm64 targets -> force PORTABLE=ON
+    - patches/0001-rocksdb-portable.patch  # [osx and arm64]
 
 build:
   number: 0
