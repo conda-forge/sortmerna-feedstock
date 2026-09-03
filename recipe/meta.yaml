@@ -9,8 +9,12 @@ source:
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: 9bdd087a2b086dbffae5200e6990296231f0b541e391f701727e37ac50f92629
   patches:
-    # bundled RocksDB v7.10.2 adds -march=native unconditionally when PORTABLE=OFF;
-    # Apple clang rejects -march=native for arm64 targets -> force PORTABLE=ON
+    # bundled RocksDB v7.10.2 fixes for Apple Silicon:
+    # - PORTABLE=ON: rocksdb adds -march=native unconditionally when PORTABLE=OFF,
+    #   and Apple clang rejects -march=native for arm64 targets
+    # - HAS_ARMV8_CRC=ON: the osx_arm64 build cross-compiles from an osx_64 env, so
+    #   CMAKE_SYSTEM_PROCESSOR=x86_64 and util/crc32c_arm64.cc is excluded, while
+    #   crc32c.cc still references its symbols (via __ARM_FEATURE_CRC32) -> link error
     - patches/0001-rocksdb-portable.patch  # [osx and arm64]
 
 build:
