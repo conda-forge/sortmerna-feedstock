@@ -1,0 +1,13 @@
+diff --git a/cmake/presets/CMakePresets_rocksdb.json b/cmake/presets/CMakePresets_rocksdb.json
+index e9c457d..abec113 100644
+--- a/cmake/presets/CMakePresets_rocksdb.json
++++ b/cmake/presets/CMakePresets_rocksdb.json
+@@ -11,6 +11,8 @@
+             "description": "copy this file as 'CMakePresets.json' into the top directory of RocksDB distro",
+             "generator": "Ninja Multi-Config",
+             "cacheVariables": {
++                "PORTABLE": "ON",
++                "HAS_ARMV8_CRC": "ON",
+                 "OPTDBG": false,
+                 "WITH_RUNTIME_DEBUG": false,
+                 "WITH_TESTS": false,
