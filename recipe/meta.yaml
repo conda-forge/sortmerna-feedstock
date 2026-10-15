@@ -1,5 +1,5 @@
 {% set name = "sortmerna" %}
-{% set version = "7.0.0" %}
+{% set version = "7.1.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: 9bdd087a2b086dbffae5200e6990296231f0b541e391f701727e37ac50f92629
+  sha256: 7fa5930a7170b820994b429a77c608e90bb20d9848abd88bc67a43a9fe92a29f
   patches:
     # bundled RocksDB v7.10.2 fixes for Apple Silicon:
     # - PORTABLE=ON: rocksdb adds -march=native unconditionally when PORTABLE=OFF,
@@ -18,7 +18,7 @@ source:
     - patches/0001-rocksdb-portable.patch  # [osx and arm64]
 
 build:
-  number: 1
+  number: 0
   # we decided to skip linux-ppc64le due to lack of maintainer interest
   # https://github.com/conda-forge/sortmerna-feedstock/pull/7
   skip: true  # [ppc64le]
