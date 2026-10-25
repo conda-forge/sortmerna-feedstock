@@ -1,5 +1,5 @@
 {% set name = "sortmerna" %}
-{% set version = "7.1.0" %}
+{% set version = "8.0.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: 7fa5930a7170b820994b429a77c608e90bb20d9848abd88bc67a43a9fe92a29f
+  sha256: a1300cdc2e67d80333dbde790b71c26f39c9f1f8a9cae8f8e4833c283250fd0c
   patches:
     # bundled RocksDB v7.10.2 fixes for Apple Silicon:
     # - PORTABLE=ON: rocksdb adds -march=native unconditionally when PORTABLE=OFF,
