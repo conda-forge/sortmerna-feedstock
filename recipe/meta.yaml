@@ -15,10 +15,10 @@ source:
     # - HAS_ARMV8_CRC=ON: the osx_arm64 build cross-compiles from an osx_64 env, so
     #   CMAKE_SYSTEM_PROCESSOR=x86_64 and util/crc32c_arm64.cc is excluded, while
     #   crc32c.cc still references its symbols (via __ARM_FEATURE_CRC32) -> link error
-    - patches/0001-rocksdb-portable.patch  # [osx and arm64]
+    - patches/0001-rocksdb-portable.patch
 
 build:
-  number: 0
+  number: 1
   # we decided to skip linux-ppc64le due to lack of maintainer interest
   # https://github.com/conda-forge/sortmerna-feedstock/pull/7
   skip: true  # [ppc64le]
