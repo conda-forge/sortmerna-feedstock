@@ -16,6 +16,11 @@ source:
     #   CMAKE_SYSTEM_PROCESSOR=x86_64 and util/crc32c_arm64.cc is excluded, while
     #   crc32c.cc still references its symbols (via __ARM_FEATURE_CRC32) -> link error
     - patches/0001-rocksdb-portable.patch
+    # backport of sortmerna e4cd342 (drop with 8.0.2): pin librapidarchive to 9965b1d.
+    # 8.0.1 cloned librapidarchive master; since ba62b4a (2026-11-03) it includes
+    # <malloc/malloc.h> on macOS, whose <mach/i386/vm_param.h> '#define BYTE_SIZE 8'
+    # breaks rapidgzip/gzip/definitions.hpp
+    - patches/0002-pin-3rdparty-deps.patch
 
 build:
   number: 1
