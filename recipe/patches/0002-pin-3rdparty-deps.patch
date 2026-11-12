@@ -1,0 +1,121 @@
+From e4cd342fa1e356a44b5aae6f01b9274cb6397429 Mon Sep 17 00:00:00 2001
+From: Daniel McDonald <damcdonald@ucsd.edu>
+Date: Fri, 30 Oct 2026 14:56:58 -0600
+Subject: [PATCH] Pin librapidarchive, BBHash, cxxopts and parasail so builds
+ are reproducible
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ 3rdparty.jinja |  8 ++++----
+ setup.py       | 15 ++++++++++-----
+ 2 files changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/3rdparty.jinja b/3rdparty.jinja
+index b51514d..7178d31 100644
+--- a/3rdparty.jinja
++++ b/3rdparty.jinja
+@@ -30,7 +30,7 @@ rocksdb:
+ indexed_bzip2:
+   note: header-only rapidgzip library for seekable parallel gzip decompression. Issue 466 fixed upstream since 2e2761b
+   url: https://github.com/mxmlnkn/librapidarchive.git  # renamed from indexed_bzip2
+-  commit: master
++  commit: 9965b1d4d7bf5c0141420c24fabb2e450d8282b1
+   shallow: true
+   src: 3rdparty/indexed_bzip2 # relative to sortmerna
+   dist: {{indexed_bzip2_dist}} # '--indexed-bzip2-dist' or default '3rdparty/indexed_bzip2' (setup.py)
+@@ -38,7 +38,7 @@ indexed_bzip2:
+ bbhash:
+   note: header-only minimal perfect hash function (BBHash/BooPHF) - replaces cmph
+   url: https://github.com/rizkg/BBHash.git
+-  commit: master
++  commit: be4220c8f8580299b212a0c6c6c867528a0f07ac
+   shallow: true
+   src: 3rdparty/bbhash # relative to sortmerna
+   dist: {{bbhash_dist}} # '--bbhash-dist' or default '3rdparty/bbhash' (setup.py)
+@@ -46,7 +46,7 @@ bbhash:
+ cxxopts:
+   note: header-only command line option parser - replaces the hand-rolled argv parser
+   url: https://github.com/jarro2783/cxxopts.git
+-  commit: master
++  commit: bb791540908e3dc623f54b34898c6ad3e47292ab  # not v3.3.1: needs jarro2783/cxxopts#488 to parse -N=-3
+   shallow: true
+   src: 3rdparty/cxxopts # relative to sortmerna
+   dist: {{cxxopts_dist}} # '--cxxopts-dist' or default '3rdparty/cxxopts' (setup.py)
+@@ -54,7 +54,7 @@ cxxopts:
+ parasail:
+   note: SIMD-accelerated pairwise sequence alignment library (replaces SSW)
+   url: https://github.com/jeffdaily/parasail.git
+-  commit: master
++  commit: fb985ee4f2302c72c87d7d56443712b2d920b106
+   shallow: true
+   src: 3rdparty/parasail
+   build: build/3rdparty/parasail
+diff --git a/setup.py b/setup.py
+index 8765a29..556d873 100644
+--- a/setup.py
++++ b/setup.py
+@@ -118,12 +118,14 @@ def load_tar(url, tgtd):
+ def git_clone(url:str, 
+               repo_dir:str, 
+               shallow:bool=False, 
+-              force:bool=False) -> tuple[int, list[str], list[str]]:
++              force:bool=False,
++              commit:str=None) -> tuple[int, list[str], list[str]]:
+     '''
+     clone a git repo if not already existing
+     args:
+       - url        url to clone
+       - repo_dir   directory where to clone
++      - commit     if given, check out this commit
+     '''
+     ST = '[git_clone]'
+     rcode, sout, eout = 0, None, None
+@@ -142,6 +144,9 @@ def git_clone(url:str,
+     else: # do clone
+         cmd = [ 'git', 'clone', url, repo_dir]
+         rcode, sout, eout = proc_run(cmd)
++    if rcode == 0 and commit:
++        cmd = ['git', 'checkout', commit]
++        rcode, sout, eout = proc_run(cmd, repo_dir, capture=True)
+     return rcode, sout, eout
+ #END git_clone  
+ 
+@@ -685,7 +690,7 @@ def indexed_bzip2_build(**kw) -> tuple[int, list[str], list[str]]:
+     url = kw.get(IBZIP2).get('url')
+     src = kw.get(IBZIP2).get('src')
+     shallow = kw.get(IBZIP2).get('shallow')
+-    rcode, sout, eout = git_clone(url, src, shallow=shallow)
++    rcode, sout, eout = git_clone(url, src, shallow=shallow, commit=kw.get(IBZIP2).get('commit'))
+     if rcode == 0:
+         cmd = ['git', 'submodule', 'update', '--init', '--recursive']
+         rcode, sout, eout = proc_run(cmd, src, capture=True)
+@@ -699,7 +704,7 @@ def bbhash_build(**kw) -> tuple[int, list[str], list[str]]:
+     url = kw.get(BBHASH).get('url')
+     src = kw.get(BBHASH).get('src')
+     shallow = kw.get(BBHASH).get('shallow')
+-    return git_clone(url, src, shallow=shallow)
++    return git_clone(url, src, shallow=shallow, commit=kw.get(BBHASH).get('commit'))
+ #END bbhash_build
+ 
+ def cxxopts_build(**kw) -> tuple[int, list[str], list[str]]:
+@@ -709,7 +714,7 @@ def cxxopts_build(**kw) -> tuple[int, list[str], list[str]]:
+     url = kw.get(CXXOPTS).get('url')
+     src = kw.get(CXXOPTS).get('src')
+     shallow = kw.get(CXXOPTS).get('shallow')
+-    return git_clone(url, src, shallow=shallow)
++    return git_clone(url, src, shallow=shallow, commit=kw.get(CXXOPTS).get('commit'))
+ #END cxxopts_build
+ 
+ def parasail_build(**kw) -> tuple[int, list[str], list[str]]:
+@@ -724,7 +729,7 @@ def parasail_build(**kw) -> tuple[int, list[str], list[str]]:
+     shallow = kw.get(PARASAIL).get('shallow', False)
+     btype = kw.get(PARASAIL).get('cmake_build_type', 'Release')
+ 
+-    rcode, sout, eout = git_clone(url, src, shallow=shallow)
++    rcode, sout, eout = git_clone(url, src, shallow=shallow, commit=kw.get(PARASAIL).get('commit'))
+     if rcode != 0:
+         return rcode, sout, eout
+ 
+-- 
+2.53.0
+
